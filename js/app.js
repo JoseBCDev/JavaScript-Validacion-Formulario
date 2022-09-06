@@ -28,18 +28,29 @@ function IniciarApp()
 
 function validarFormulario(e)
 {
+ 
     if(e.target.value.length > 0){
          console.log('si hay algo');
     }else{
         e.target.classList.add('border','border-red-500');
-        mostrarError();
+        mostrarError('Todos los campos son obligatorios');
     }
+   //CALCULAMOS SI ES DE TIPO EMAIL O NO
+    if(e.target.type === 'email'){
+        //VERIFICAMOS SI EL CAMPO EMAIL, TIENE UN @, SINO LE MOSTRAMOS EL EJEMPLO
+        const resultado = e.target.value.indexOf('@');
+        if(resultado < 0)
+        {
+            mostrarError('El email no es válido');
+        }
+    }
+
 }
 
-function mostrarError(){
+function mostrarError(mensaje){
     //CREAMOS UN ELEMENTO P Y LE DAMOS TEXTO Y DISEÑO
     const mensajeError = document.createElement('p');
-    mensajeError.textContent = 'Todos los campos son obligatorios';
+    mensajeError.textContent = mensaje;
     mensajeError.classList.add('border','border-red-500','background-red-100','text-red-500','p-3','mt-5','text-center','error');
 
     
@@ -49,7 +60,5 @@ function mostrarError(){
     if(errores.length === 0)
     {
         formulario.appendChild(mensajeError);
-    }else{
-
     }
 }
