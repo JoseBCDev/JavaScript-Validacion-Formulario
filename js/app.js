@@ -30,19 +30,38 @@ function validarFormulario(e)
 {
  
     if(e.target.value.length > 0){
+
+        const error = document.querySelector('p.error');
+        error.remove();
+
+        e.target.classList.remove('border','border-red-500'); //REMOVEMOS LA CLASE BORDE ROJO
+        e.target.classList.add('border','border-green-500'); //AGREGAMOS CLASE BORDE VERDE
+        
          console.log('si hay algo');
     }else{
-        e.target.classList.add('border','border-red-500');
+         e.target.classList.remove('border','border-green-500'); //REMOVEMOS CLASE BORDE VERDE
+        e.target.classList.add('border','border-red-500');//AGREGAMOS CLASE BORDE ROJO
+        
         mostrarError('Todos los campos son obligatorios');
     }
    //CALCULAMOS SI ES DE TIPO EMAIL O NO
     if(e.target.type === 'email'){
-        //VERIFICAMOS SI EL CAMPO EMAIL, TIENE UN @, SINO LE MOSTRAMOS EL EJEMPLO
-        const resultado = e.target.value.indexOf('@');
-        if(resultado < 0)
+        //VERIFICAMOS SI EL CAMPO EMAIL, CONTIENE LOS CARACTERES DE EMAIL
+        //APLICAMOS EXPRESIONES REGULARES de emailregex.com
+        const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(er.test(e.target.value))
         {
-            mostrarError('El email no es válido');
+            const error = document.querySelector('p.error');
+            error.remove();
+
+            e.target.classList.remove('border','border-red-500');
+            e.target.classList.add('border','border-green-500');  
+        }else{
+            e.target.classList.remove('border','border-green-500');
+            e.target.classList.add('border','border-red-500');  
+            mostrarError('Email no válido');
         }
+
     }
 
 }
