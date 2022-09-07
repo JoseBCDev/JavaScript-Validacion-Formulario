@@ -1,6 +1,7 @@
 //VARIABLES
 
 const btnEnviar = document.querySelector('#enviar');
+const btnReset = document.querySelector('#resetBtn');
 const formulario = document.querySelector('#enviar-mail');
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
@@ -21,9 +22,52 @@ function eventListeners(){
     asunto.addEventListener('blur',validarFormulario);
 
     mensaje.addEventListener('blur',validarFormulario);
+
+    formulario.addEventListener('submit',enviarEmail);
+
+    btnReset.addEventListener('click',resetearFormulario);
+
 }
 //FUNCIONES
 
+function enviarEmail(e)
+{
+    e.preventDefault();
+
+    //PAGINA PARA VER MAS SPINNER
+    // https://tobiasahlin.com/spinkit/
+    const spinner = document.querySelector('#spinner');
+    spinner.style.display = 'flex';
+
+    //EL setTimeout permite en 3 segundos invocar los elementos dentro
+    
+    setTimeout(() => {
+        //en 3 segundos le damoas estilo none al spinner
+        spinner.style.display = 'none';
+
+        //creamos el elemento parrafo
+        const parrafo = document.createElement('p');
+        parrafo.textContent = 'El mensaje se Envio Correctamente';
+        parrafo.classList.add('text-center', 'my-10', 'p-2','bg-green-500', 'text-white', 'font-bold','uppercase');
+    
+        //INSERTAMOS EL PARRAFO EN LA POSICION DE SPINNER
+        formulario.insertBefore(parrafo,spinner);
+
+        //REMOVEMOS EL PARRAFO CON ESTILO EN 5 SEGUNDOS
+        setTimeout(() => {
+            parrafo.remove();
+
+            resetearFormulario();
+        }, 5000);
+    }, 3000);
+}
+
+function resetearFormulario()
+{
+    formulario.reset();
+
+    IniciarApp();
+}
 function IniciarApp()
 {
     btnEnviar.disabled = true;
